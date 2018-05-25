@@ -265,7 +265,7 @@ const props = mocker.mockFragments(ArticleCard.fragments, {
 
 ## API
 
-### `fraql\`\``
+### `fraql` / `gql`
 
 The default export of `fraql` is a drop-in replacement for `graphql-tag` that automatically converts fragments into inline fragments.
 
