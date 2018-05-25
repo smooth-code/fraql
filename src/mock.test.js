@@ -6,7 +6,7 @@ import gql, {
   createMockerFromIntrospection,
   createMockerFromSchema,
   generateSchemaFromIntrospectionResult,
-} from './'
+} from './mock'
 
 describe('mock', () => {
   let mocker
