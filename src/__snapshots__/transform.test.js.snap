@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transform #toInlineFragment should transform a GraphQL tree into an inline fragment 1`] = `
+"... on Article {
+  title
+}
+"
+`;

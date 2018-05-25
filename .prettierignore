@@ -1,0 +1,7 @@
+node_modules/
+/coverage/
+/dist/
+__fixtures__/
+__snapshots__/
+CHANGELOG.md
+package.json

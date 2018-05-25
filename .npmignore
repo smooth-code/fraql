@@ -1,0 +1,8 @@
+/*
+!/mock.js
+!/server.js
+!/dist/**/*.js
+!/src/**/*.js
+__fixtures__
+__snapshots__
+*.test.js

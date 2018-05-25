@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fraql should keep original document 1`] = `
+"
+      fragment _ on Article {
+        title
+      }
+    "
+`;
+
+exports[`fraql should not do anything on query 1`] = `
+"
+      query Articles {
+        articles {
+          title
+        }
+      }
+    "
+`;
+
+exports[`fraql should support directives 1`] = `
+"... on Article {
+  title @upperCase
+}
+"
+`;
+
+exports[`fraql should support inline fragments 1`] = `
+"... on Article {
+  title
+  author {
+    name
+    ... on User {
+      avatar
+    }
+  }
+}
+"
+`;
+
+exports[`fraql should support named fragments 1`] = `
+"... on Article {
+  ... on Article {
+    id
+  }
+  title
+  siblings {
+    ... on Article {
+      id
+    }
+    title
+    siblings {
+      ... on Article {
+        id
+      }
+      title
+    }
+  }
+}
+"
+`;
+
+exports[`fraql should transform basic fragments 1`] = `
+"... on Article {
+  title
+}
+"
+`;
