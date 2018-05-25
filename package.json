@@ -2,7 +2,7 @@
   "name": "fraql",
   "version": "1.1.0",
   "description": "Build data aware components using GraphQL.",
-  "repository": "git@github.com:smooth-code/loadable-components.git",
+  "repository": "git@github.com:smooth-code/fraql.git",
   "main": "dist/fraql.cjs.js",
   "jsnext:main": "dist/fraql.es.js",
   "module": "dist/fraql.es.js",
