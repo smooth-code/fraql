@@ -1,6 +1,6 @@
 {
   "name": "fraql",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Build data aware components using GraphQL.",
   "repository": "git@github.com:smooth-code/loadable-components.git",
   "main": "dist/fraql.cjs.js",
