@@ -1,12 +1,13 @@
 import { GraphQLSchema } from 'graphql'
 import { makeExecutableSchema } from 'graphql-tools'
 import * as introspectionResult from './__fixtures__/schema.json'
-import gql, {
+import gql from './'
+import {
   Mocker,
   createMockerFromIntrospection,
   createMockerFromSchema,
   generateSchemaFromIntrospectionResult,
-} from './'
+} from './mock'
 
 describe('mock', () => {
   let mocker

@@ -7,7 +7,6 @@ import json from 'rollup-plugin-json'
 import uglify from 'rollup-plugin-uglify'
 import visualizer from 'rollup-plugin-visualizer'
 import sourceMaps from 'rollup-plugin-sourcemaps'
-import pkg from './package.json'
 
 const commonPlugins = [
   json(),
@@ -17,17 +16,17 @@ const commonPlugins = [
   commonjs({ ignoreGlobal: true }),
 ]
 
-const configBase = {
-  input: 'src/index.js',
-  external: ['graphql/language'].concat(Object.keys(pkg.dependencies)),
-  plugins: commonPlugins,
-}
-
 const globals = {
   'graphql-tag': 'gql',
   graphql: 'graphql',
   'graphql-tools': 'graphqlTools',
   'graphql/language': 'graphqlLanguage',
+}
+
+const configBase = {
+  input: 'src/index.js',
+  external: Object.keys(globals),
+  plugins: commonPlugins,
 }
 
 const umdConfig = Object.assign({}, configBase, {
