@@ -3,6 +3,7 @@ import {
   buildClientSchema,
   execute,
   GraphQLObjectType,
+  GraphQLInterfaceType,
   GraphQLSchema,
 } from 'graphql'
 import {
@@ -21,7 +22,8 @@ export function generateSchemaFromIntrospectionResult(introspectionResult) {
     if (
       typeName.startsWith('__') ||
       typeName === 'Query' ||
-      !(type instanceof GraphQLObjectType)
+      (!(type instanceof GraphQLObjectType) &&
+        !(type instanceof GraphQLInterfaceType))
     ) {
       return fields
     }
@@ -64,6 +66,14 @@ function executeFragment(schema, fragmentDocument) {
   `
 
   const res = execute(schema, query)
+
+  if (res.errors && res.errors.length) {
+    throw res.errors[0]
+  }
+
+  if (res.data[fieldName] === undefined) {
+    throw new Error(`fraql: type "${typeName}" not found`)
+  }
   return res.data[fieldName]
 }
 

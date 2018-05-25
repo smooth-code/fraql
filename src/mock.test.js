@@ -108,6 +108,53 @@ describe('mock', () => {
       const data2 = mocker.mockFragment(fragment)
       expect(data2.coverPicture.cloudinaryId).toBe('Hello World')
     })
+
+    it('should throw an error if a type is not found', () => {
+      const fragment = gql`
+        fragment _ on WTF {
+          id
+          name
+        }
+      `
+
+      expect.assertions(1)
+      try {
+        mocker.mockFragment(fragment)
+      } catch (error) {
+        expect(error.message).toBe('fraql: type "WTF" not found')
+      }
+    })
+
+    it('should throw an error if an interface has no __typename', () => {
+      const fragment = gql`
+        fragment _ on Place {
+          id
+          name
+        }
+      `
+
+      expect.assertions(1)
+      try {
+        mocker.mockFragment(fragment, { mocks: { Place: () => ({}) } })
+      } catch (error) {
+        expect(error.message).toBe('Please return a __typename in "Place"')
+      }
+    })
+
+    it('should support interface', () => {
+      const fragment = gql`
+        fragment _ on Place {
+          id
+          name
+        }
+      `
+
+      const data = mocker.mockFragment(fragment, {
+        mocks: { Place: () => ({ __typename: 'Hotel' }) },
+      })
+
+      expect(data.id).toBeDefined()
+    })
   })
 
   describe('#fromFragments', () => {
