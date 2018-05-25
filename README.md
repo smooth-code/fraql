@@ -21,35 +21,10 @@ FraQL brings component isolation and automocking into your application. You can 
 
 ## Example
 
-**Without FraQL**
-
-```js
-import gql from 'graphql-tag'
-
-const fragment = gql`
-  fragment MyFragment on Article {
-    title
-    description
-  }
-`
-
-const query = gql`
-  query Articles {
-    articles {
-      id
-      ...MyFragment
-    }
-  }
-
-  ${fragment}
-`
-```
-
-**With FraQL**
-
 ```js
 import gql from 'fraql'
 
+// Create fragment without naming it
 const fragment = gql`
   fragment _ on Article {
     title
@@ -57,6 +32,7 @@ const fragment = gql`
   }
 `
 
+// Just use it in your query!
 const query = gql`
   query Articles {
     articles {
