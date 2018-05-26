@@ -47,6 +47,8 @@ const query = gql`
 `
 ```
 
+**[⚡️ See live example on CodeSandbox](https://codesandbox.io/s/l42jqm319l)**
+
 ## Motivation
 
 Putting data next to your component is a good practice. It is built-in [Relay](https://facebook.github.io/relay/) and Lee Byron explains the advantages into [his talk about the IDEA architecture](https://www.youtube.com/watch?v=oTcDmnAXZ4E).
@@ -127,7 +129,9 @@ const ArticleList = ({ articles }) => (
 export default ArticleList
 ```
 
-**[See an example of FraQL + React & Apollo](https://github.com/smooth-code/fraql/tree/master/examples/react)**
+**[⚡️ See live example on CodeSandbox](https://codesandbox.io/s/l42jqm319l)**
+
+**[⚡️ See React example in this repository](https://github.com/smooth-code/fraql/tree/master/examples/react)**
 
 ## Mocking
 
@@ -210,7 +214,7 @@ const props = mocker.mockFragments(ArticleCard.fragments)
 const articleCard = <ArticleCard {...props} />
 ```
 
-**[See an example of mock usage into StoryBook](https://github.com/smooth-code/fraql/tree/master/examples/react)**
+**[⚡️ See StoryBook example in this repository](https://github.com/smooth-code/fraql/tree/master/examples/react)**
 
 ## Recipes
 
