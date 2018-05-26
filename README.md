@@ -17,14 +17,18 @@
 npm install fraql graphql graphql-tools graphql-tag
 ```
 
-FraQL brings component isolation and automocking into your application. You can now build data aware components.
+FraQL solves several things:
+
+* ☀️ Isolation: fragments don't rely on name anymore
+* ✨ Mocking: generate data & props from fragments
+* 🤯 Collocation: put GraphQL in your components
 
 ## Example
 
 ```js
 import gql from 'fraql'
 
-// Create fragment without naming it
+// Create fragment without naming it.
 const fragment = gql`
   fragment _ on Article {
     title
@@ -32,7 +36,7 @@ const fragment = gql`
   }
 `
 
-// Just use it in your query!
+// Just use it in your queries!
 const query = gql`
   query Articles {
     articles {
@@ -45,9 +49,11 @@ const query = gql`
 
 ## Motivation
 
-Puting data next to your component is a good practice. It is built-in [Relay](https://facebook.github.io/relay/) and Lee Byron explains the advantages into [his talk about the IDEA architecture](https://www.youtube.com/watch?v=oTcDmnAXZ4E).
+Putting data next to your component is a good practice. It is built-in [Relay](https://facebook.github.io/relay/) and Lee Byron explains the advantages into [his talk about the IDEA architecture](https://www.youtube.com/watch?v=oTcDmnAXZ4E).
 
-If you use Apollo or other GraphQL client, it is not an easy task. The goal of FraQL is to make it simple and easy to do in all your applications (React, VueJS...). Since GraphQL is statically typed, FraQL can also generate mock from fragments!
+I tried to do it by myself, but relying on fragment names is not an easy task. FraQL solves this issue by bringing isolation, fragments do not rely on their names.
+
+The second problem solved by FraQL is the mocking. Generating a set of data for complex components is a pain. FraQL solves it by generating data right from your fragments!
 
 ## Usage with React
 
@@ -57,7 +63,7 @@ FraQL exports a default tag function that is a drop-in replacement for `graphql-
 
 FraQL is not a framework, but it is recommended create a static property `fragments` on your components that contains a map of properties. For each one, you can specify the associated fragment.
 
-You may have noticed that the fragment use "\_" as name. FraQL transforms your fragment into an inline fragment, the name is just dropped, using "\_" is just a convention.
+You may have noticed that the fragment uses "\_" as name. FraQL transforms your fragment into an inline fragment, the name is just dropped, using "\_" is just a convention.
 
 ```js
 import React from 'react'
@@ -70,6 +76,7 @@ const ArticleCard = ({ article }) => (
   </div>
 )
 
+// Create a map of fragments and reference them on a static property "fragments"
 ArticleCard.fragments = {
   article: gql`
     fragment _ on Article {
@@ -84,9 +91,9 @@ export default ArticleCard
 
 ### Use fragments into your queries
 
-Using a fragment into a query is natural, the only thing to do it to reference it in your query.
+With FraQL, using a fragment into a query is natural, the only thing to do it to reference it at the place you want to use it.
 
-You can choose to import `gql` either from `fraql` or from `graphql-tag` since the magic of FraQL happens only when you use it on fragments. Using `fraql` on a query has exactly the same effect as using `graphql-tag`.
+Importing `gql` from `fraql` is not require for building query. In this case this is just a pass-throught to `graphql-tag`. The magic behind FraQL only happens when you use it on a fragment.
 
 ```js
 import React from 'react'
@@ -94,6 +101,7 @@ import gql from 'fraql'
 import { Query } from 'apollo-client'
 import ArticleCard from './ArticleCard'
 
+// Build your query by using your fragment.
 const ARTICLES = gql`
   query Articles {
     articles {
@@ -119,11 +127,13 @@ const ArticleList = ({ articles }) => (
 export default ArticleList
 ```
 
+**[See an example of FraQL + React & Apollo](https://github.com/smooth-code/fraql/tree/master/examples/react)**
+
 ## Mocking
 
-It is common to use a tool like [StoryBook](https://github.com/storybooks/storybook) to develop your components in an isolated environment. But it is always complicated to know what data are required by the component.
+Tools like [StoryBook](https://github.com/storybooks/storybook) permits you to develop your components into an isolated environment. But you still have to generate a set of data for displaying your components. Maintaining this set of data is a pain.
 
-FraQL solves this by generating your props directly from the fragments.
+If all your components have fragments, you get mocking for free!
 
 #### 1. Generate introspection
 
@@ -132,7 +142,7 @@ Mocking data from a fragment requires to know all schema types. You have to gene
 FraQL exposes a method `introspectSchema` to simplify this operation. The only thing you have to do is creating a script that dump your introspection result into a JSON file.
 
 ```js
-// buildIntrospectionResult.js
+// Example of script that generate an introspection result into "schema.json"
 const { writeFileSync } = require('fs')
 const { introspectSchema } = require('fraql/server')
 const schema = require('./myGraphQLSchema') // Your schema defined server-side
@@ -159,6 +169,8 @@ export default createMockerFromIntrospection(introspectionData)
 
 You can now mock fragments using `mockFragment` or `mockFragments` methods.
 
+**Single fragment**
+
 ```js
 import gql from 'fraql'
 import mocker from './mocker'
@@ -183,9 +195,73 @@ const data = mocker.mockFragment(fragment)
 // }
 ```
 
+**Multiple fragments (components)**
+
+```js
+import React from 'react'
+import gql from 'fraql'
+import mocker from './mocker'
+import ArticleCard from './ArticleCard'
+
+// Generate all props directly from fragments
+const props = mocker.mockFragments(ArticleCard.fragments)
+
+// Create a component using props
+const articleCard = <ArticleCard {...props} />
+```
+
+**[See an example of mock usage into StoryBook](https://github.com/smooth-code/fraql/tree/master/examples/react)**
+
 ## Recipes
 
-### Convert a GraphQL fragment into a FraQL fragment
+### Compose fragments
+
+One of the principle of React is component composition. It is recommended to do the same with your GraphQL fragments. FraQL makes it easy:
+
+```js
+// ArticleTitle.js
+import React from 'react'
+import gql from 'fraql'
+
+const ArticleTitle = ({ article }) => <h2>{article.title}</h2>
+
+ArticleTitle.fragments = {
+  article: gql`
+    fragment _ on Article {
+      title
+    }
+  `,
+}
+
+export default ArticleTitle
+```
+
+```js
+// ArticleCard.js
+import React from 'react'
+import gql from 'fraql'
+import ArticleTitle from './ArticleTitle'
+
+const ArticleCard = ({ article }) => (
+  <div>
+    <ArticleTitle article={article} />
+    <div>{article.text}</div>
+  </div>
+)
+
+ArticleCard.fragments = {
+  article: gql`
+    fragment _ on Article {
+      ${ArticleTitle.fragments.article}
+      text
+    }
+  `,
+}
+
+export default ArticleCard
+```
+
+### Use without `gql`
 
 FraQL offers a drop-in replacement for `graphql-tag` but sometimes you don't want to use `gql` to define your fragments. As mentioned in [graphql-tag documentation](https://github.com/apollographql/graphql-tag) there is a lot of other ways to do it (using Babel, Webpack, etc..).
 
@@ -204,6 +280,33 @@ const query = gql`
       ${inlineFragment}
     }
   }
+`
+```
+
+### Mix named and inline fragments
+
+Sometimes you may want to have the best of the two world, use a name fragment in one query and a inline fragment in another.
+
+For this specific use-case FraQL exposes the original document:
+
+```js
+import gql from 'fraql'
+
+const fragment = gql`
+  fragment BaseArticleInfos on Article {
+    title
+    text
+  }
+`
+
+const query = gql`
+  query Articles {
+    articles {
+      ...BaseArticleInfos
+    }
+  }
+
+  ${fragment.originalDocument}
 `
 ```
 
