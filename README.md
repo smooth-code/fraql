@@ -61,11 +61,11 @@ The second problem solved by FraQL is the mocking. Generating a set of data for 
 
 ### Reference fragments into components
 
-FraQL exports a default tag function that is a drop-in replacement for `graphql-tag`. By using it you can create easily reusable fragments.
+FraQL exports a default tag function that is a drop-in replacement for `graphql-tag`. By using it you can create reusable fragments easily.
 
-FraQL is not a framework, but it is recommended create a static property `fragments` on your components that contains a map of properties. For each one, you can specify the associated fragment.
+FraQL is not a framework, but it comes with good practices. It is recommended to create a static property `fragments` on your components that contains a map of component properties. For each one, you specify the associated fragment.
 
-You may have noticed that the fragment uses "\_" as name. FraQL transforms your fragment into an inline fragment, the name is just dropped, using "\_" is just a convention.
+You may have noticed that the name of the fragment is "\_". FraQL transforms your fragment into an inline fragment. You can pick any name you want, because it will be dropped the transformation anyway.
 
 ```js
 import React from 'react'
@@ -78,7 +78,7 @@ const ArticleCard = ({ article }) => (
   </div>
 )
 
-// Create a map of fragments and reference them on a static property "fragments"
+// Create a map of fragments and reference them on a static property "fragments".
 ArticleCard.fragments = {
   article: gql`
     fragment _ on Article {
@@ -93,9 +93,9 @@ export default ArticleCard
 
 ### Use fragments into your queries
 
-With FraQL, using a fragment into a query is natural, the only thing to do it to reference it at the place you want to use it.
+With FraQL, using a fragment into a query is obvious, just put the fragment where you want to use it.
 
-Importing `gql` from `fraql` is not require for building query. In this case this is just a pass-throught to `graphql-tag`. The magic behind FraQL only happens when you use it on a fragment.
+Importing `gql` from `fraql` is not required for queries. In this case this is just a pass-through to `graphql-tag`. The magic behind FraQL only happens when you use it on a fragment.
 
 ```js
 import React from 'react'
@@ -135,18 +135,18 @@ export default ArticleList
 
 ## Mocking
 
-Tools like [StoryBook](https://github.com/storybooks/storybook) permits you to develop your components into an isolated environment. But you still have to generate a set of data for displaying your components. Maintaining this set of data is a pain.
+Tools like [StoryBook](https://github.com/storybooks/storybook) allows you to develop your components into an isolated environment. But you still have to write a set of data for displaying your components. Each time you modify your component, you have to modify this set of data, it is a real pain to maintain!
 
 If all your components have fragments, you get mocking for free!
 
 #### 1. Generate introspection
 
-Mocking data from a fragment requires to know all schema types. You have to generate a introspection result from your schema in order to use mocking.
+Mocking data from a fragment requires knowing all schema types. That's why you have to generate a introspection result from your schema in order to use mocking.
 
-FraQL exposes a method `introspectSchema` to simplify this operation. The only thing you have to do is creating a script that dump your introspection result into a JSON file.
+FraQL exposes a method `introspectSchema` to simplify this operation. The only thing you have to do is create a script that dumps your introspection result into a JSON file.
 
 ```js
-// Example of script that generate an introspection result into "schema.json"
+// Example of script that generates an introspection result into "schema.json".
 const { writeFileSync } = require('fs')
 const { introspectSchema } = require('fraql/server')
 const schema = require('./myGraphQLSchema') // Your schema defined server-side
@@ -157,9 +157,9 @@ fs.writeFileSync('schema.json', JSON.stringify(data))
 
 #### 2. Create a mocker
 
-FraQL exposes a method `createMockerFromIntrospection` that create a mocker from your `schema.json`.
+FraQL exposes a method `createMockerFromIntrospection` that creates a mocker from your `schema.json`.
 
-It is recommended to create one mocker and to use it everywhere you need to generate data.
+It is recommended to create one mocker and to use it wherever you need to generate data.
 
 ```js
 // mocker.js
@@ -207,10 +207,10 @@ import gql from 'fraql'
 import mocker from './mocker'
 import ArticleCard from './ArticleCard'
 
-// Generate all props directly from fragments
+// Generate all props directly from fragments.
 const props = mocker.mockFragments(ArticleCard.fragments)
 
-// Create a component using props
+// Create an element using generated props.
 const articleCard = <ArticleCard {...props} />
 ```
 
@@ -220,7 +220,7 @@ const articleCard = <ArticleCard {...props} />
 
 ### Compose fragments
 
-One of the principle of React is component composition. It is recommended to do the same with your GraphQL fragments. FraQL makes it easy:
+One of the principles of React is component composition. It is recommended to do the same with your GraphQL fragments.
 
 ```js
 // ArticleTitle.js
@@ -267,9 +267,9 @@ export default ArticleCard
 
 ### Use without `gql`
 
-FraQL offers a drop-in replacement for `graphql-tag` but sometimes you don't want to use `gql` to define your fragments. As mentioned in [graphql-tag documentation](https://github.com/apollographql/graphql-tag) there is a lot of other ways to do it (using Babel, Webpack, etc..).
+FraQL offers a drop-in replacement for `graphql-tag` but sometimes you don't use `gql` to define your fragments. As mentioned in [graphql-tag documentation](https://github.com/apollographql/graphql-tag) there are lots of other ways to do it (using Babel, Webpack, etc..).
 
-FraQL exposes a function `toInlineFragment`, this function transforms a GraphQL fragment into an inline fragment.
+FraQL exposes a function `toInlineFragment`, it transforms a GraphQL fragment into an inline fragment.
 
 ```js
 import { toInlineFragment } from 'fraql'
@@ -289,9 +289,9 @@ const query = gql`
 
 ### Mix named and inline fragments
 
-Sometimes you may want to have the best of the two world, use a name fragment in one query and a inline fragment in another.
+Sometimes you may want to have the best of the two worlds, use a name fragment in one query and an inline fragment in another.
 
-For this specific use-case FraQL exposes the original document:
+For this specific use-case, FraQL exposes the original document:
 
 ```js
 import gql from 'fraql'
@@ -316,7 +316,7 @@ const query = gql`
 
 ### Use custom mocks
 
-Mocking feature of FraQL is build on top of [grapql-tools](https://www.apollographql.com/docs/graphql-tools/), it means you can [customize all mocks](https://www.apollographql.com/docs/graphql-tools/mocking.html#Customizing-mocks).
+Mocking feature of FraQL is build on top of [grapql-tools](https://www.apollographql.com/docs/graphql-tools/), it means you can [customize all your mocks](https://www.apollographql.com/docs/graphql-tools/mocking.html#Customizing-mocks).
 
 You can define global mocks when you create the mocker:
 
@@ -399,7 +399,7 @@ const query = gql`
 
 ### `introspectSchema(schema)`
 
-Generate introspection data from a schema.
+Generates introspection data from a schema.
 
 ```js
 import { introspectSchema } from 'fraql/server'
@@ -410,7 +410,7 @@ const introspectionData = introspectSchema(schema)
 
 ### `createMockerFromIntrospection(introspectionData, { mocks } = {})`
 
-Generate a mocker from an introspection result generated using `introspectSchema`.
+Generates a mocker from an introspection result generated using `introspectSchema`.
 
 You can specify mocks, using [the same format as `graphql-tools`](https://www.apollographql.com/docs/graphql-tools/mocking.html#Customizing-mocks).
 
@@ -423,7 +423,7 @@ const mocker = createMockerFromIntrospection(introspectionData)
 
 ### `mocker.mockFragment(fragment, { mocks } = {})`
 
-Generate mock data from one fragment.
+Generates mock data from one fragment.
 
 You can specify mocks, using [the same format as `graphql-tools`](https://www.apollographql.com/docs/graphql-tools/mocking.html#Customizing-mocks).
 
@@ -440,7 +440,7 @@ const data = fraqlMocker.mockFragment(fragment)
 
 ### `mocker.mockFragments(fragments, { mocks } = {})`
 
-Generate mock data from a map of fragments.
+Generates mock data from a map of fragments.
 
 You can specify mocks, using [the same format as `graphql-tools`](https://www.apollographql.com/docs/graphql-tools/mocking.html#Customizing-mocks).
 
