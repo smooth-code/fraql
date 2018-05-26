@@ -19,9 +19,9 @@ npm install fraql graphql graphql-tools graphql-tag
 
 FraQL solves several things:
 
-☀️ Isolation: fragments don't rely on name anymore<br>
-✨ Mocking: generate data & props from fragments<br>
-🤯 Collocation: put GraphQL in your components
+* ☀️ Isolation: fragments don't rely on name anymore
+* ✨ Mocking: generate data & props from fragments
+* 🤯 Collocation: put GraphQL in your components
 
 ## Example
 
