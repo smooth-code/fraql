@@ -47,7 +47,7 @@ const query = gql`
 `
 ```
 
-**[⚡️ See live example on CodeSandbox](https://codesandbox.io/s/l42jqm319l)**
+**⚡️ [See live example on CodeSandbox](https://codesandbox.io/s/l42jqm319l)**
 
 ## Motivation
 
@@ -129,9 +129,9 @@ const ArticleList = ({ articles }) => (
 export default ArticleList
 ```
 
-**[⚡️ See live example on CodeSandbox](https://codesandbox.io/s/l42jqm319l)**
+**⚡️ [See live example on CodeSandbox](https://codesandbox.io/s/l42jqm319l)**
 
-**[⚡️ See React example in this repository](https://github.com/smooth-code/fraql/tree/master/examples/react)**
+**⚡️ [See React example in this repository](https://github.com/smooth-code/fraql/tree/master/examples/react)**
 
 ## Mocking
 
@@ -214,7 +214,7 @@ const props = mocker.mockFragments(ArticleCard.fragments)
 const articleCard = <ArticleCard {...props} />
 ```
 
-**[⚡️ See StoryBook example in this repository](https://github.com/smooth-code/fraql/tree/master/examples/react)**
+**⚡️ [See StoryBook example in this repository](https://github.com/smooth-code/fraql/tree/master/examples/react)**
 
 ## Recipes
 
