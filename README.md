@@ -269,11 +269,11 @@ export default ArticleCard
 
 FraQL offers a drop-in replacement for `graphql-tag` but sometimes you don't use `gql` to define your fragments. As mentioned in [graphql-tag documentation](https://github.com/apollographql/graphql-tag) there are lots of other ways to do it (using Babel, Webpack, etc..).
 
-FraQL exposes a function `toInlineFragment`, it transforms a GraphQL fragment into an inline fragment.
+FraQL exposes a function `toInlineFragment` that transforms a GraphQL fragment into an inline fragment.
 
 ```js
 import { toInlineFragment } from 'fraql'
-import gql from 'grapql-tag'
+import gql from 'graphql-tag'
 import fragment from './myFragment.gql'
 
 const inlineFragment = toInlineFragment(fragment)
@@ -289,9 +289,9 @@ const query = gql`
 
 ### Mix named and inline fragments
 
-Sometimes you may want to have the best of the two worlds, use a name fragment in one query and an inline fragment in another.
+Sometimes you may want to have the best of the two worlds, use a named fragment in one query and an inline fragment in another.
 
-For this specific use-case, FraQL exposes the original document:
+For this specific use-case FraQL exposes the original document:
 
 ```js
 import gql from 'fraql'
@@ -316,7 +316,7 @@ const query = gql`
 
 ### Use custom mocks
 
-Mocking feature of FraQL is build on top of [grapql-tools](https://www.apollographql.com/docs/graphql-tools/), it means you can [customize all your mocks](https://www.apollographql.com/docs/graphql-tools/mocking.html#Customizing-mocks).
+Mocking feature of FraQL is build on top of [graphql-tools](https://www.apollographql.com/docs/graphql-tools/), it means you can [customize all your mocks](https://www.apollographql.com/docs/graphql-tools/mocking.html#Customizing-mocks).
 
 You can define global mocks when you create the mocker:
 
