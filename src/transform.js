@@ -1,4 +1,5 @@
 import { print, Source } from 'graphql/language'
+import extend from 'xtend'
 
 function inlineSpreadFragments(fragmentDefinitions, definition) {
   if (definition.kind === 'FragmentSpread') {
@@ -10,12 +11,11 @@ function inlineSpreadFragments(fragmentDefinitions, definition) {
     return definition
   }
 
-  definition.selectionSet = {
-    ...definition.selectionSet,
+  definition.selectionSet = extend(definition.selectionSet, {
     selections: definition.selectionSet.selections.map(selection =>
       inlineSpreadFragments(fragmentDefinitions, selection),
     ),
-  }
+  })
 
   return definition
 }
@@ -47,16 +47,14 @@ export function toInlineFragment(doc) {
     throw new Error('Unable to find a fragment definition')
   }
 
-  const newDoc = {
-    ...doc,
+  const newDoc = extend(doc, {
     originalDocument: doc,
     definitions: [definition],
-  }
+  })
 
-  newDoc.loc = {
-    ...doc.loc,
+  newDoc.loc = extend(doc.loc, {
     source: new Source(print(newDoc)),
-  }
+  })
 
   return newDoc
 }
