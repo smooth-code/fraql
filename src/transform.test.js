@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { toInlineFragment } from './'
+import { toInlineFragment } from '.'
 
 describe('transform', () => {
   describe('#toInlineFragment', () => {

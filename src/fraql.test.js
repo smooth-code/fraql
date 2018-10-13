@@ -1,4 +1,4 @@
-import gql from './'
+import gql from '.'
 
 describe('fraql', () => {
   it('should not do anything on query', () => {
