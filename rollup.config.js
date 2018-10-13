@@ -4,7 +4,7 @@ import replace from 'rollup-plugin-replace'
 import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'
 import json from 'rollup-plugin-json'
-import uglify from 'rollup-plugin-uglify'
+import { uglify } from 'rollup-plugin-uglify'
 import visualizer from 'rollup-plugin-visualizer'
 import sourceMaps from 'rollup-plugin-sourcemaps'
 
@@ -12,7 +12,7 @@ const commonPlugins = [
   json(),
   nodeResolve(),
   sourceMaps(),
-  babel({ plugins: ['external-helpers'] }),
+  babel(),
   commonjs({ ignoreGlobal: true }),
 ]
 
@@ -56,7 +56,7 @@ const prodUmdConfig = Object.assign({}, umdConfig, {
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    uglify({ sourceMap: true }),
+    uglify({ sourcemap: true }),
     visualizer({ filename: './bundle-stats.html' }),
   ]),
 })
