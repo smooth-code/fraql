@@ -11,6 +11,7 @@ import {
   mergeSchemas,
   transformSchema,
 } from 'graphql-tools'
+import extend from 'xtend'
 
 export function generateSchemaFromIntrospectionResult(introspectionResult) {
   const introspectionData = introspectionResult.data || introspectionResult
@@ -27,12 +28,11 @@ export function generateSchemaFromIntrospectionResult(introspectionResult) {
     ) {
       return fields
     }
-    return {
-      ...fields,
+    return extend(fields, {
       [`fraql__${typeName}`]: {
         type: typeMap[typeName],
       },
-    }
+    })
   }, {})
 
   const fraqlSchema = new GraphQLSchema({
@@ -84,7 +84,7 @@ export class Mocker {
   }
 
   mockSchema({ mocks } = {}) {
-    const mergedMocks = { ...this.mocks, ...mocks }
+    const mergedMocks = extend(this.mocks, mocks)
     return mockSchema(this.schema, { mocks: mergedMocks })
   }
 
@@ -97,10 +97,9 @@ export class Mocker {
     const schema = this.mockSchema(options)
     return Object.keys(fragmentDocuments).reduce((data, key) => {
       const fragmentDocument = fragmentDocuments[key]
-      return {
-        ...data,
+      return extend(data, {
         [key]: executeFragment(schema, fragmentDocument),
-      }
+      })
     }, {})
   }
 }

@@ -73,5 +73,8 @@
       "path": "./dist/fraql.min.js",
       "maxSize": "2kb"
     }
-  ]
+  ],
+  "dependencies": {
+    "xtend": "^4.0.1"
+  }
 }
