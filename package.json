@@ -1,6 +1,6 @@
 {
   "name": "fraql",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "GraphQL fragments made simple",
   "repository": "git@github.com:smooth-code/fraql.git",
   "main": "dist/fraql.cjs.js",
